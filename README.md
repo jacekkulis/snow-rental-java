@@ -1,6 +1,7 @@
 # SnowRental
 
 Project implements ski and snowboard rental service in Spring MVC.
+[See demos here](demo/)
 
 ### Registration process
 
