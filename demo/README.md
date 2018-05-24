@@ -20,7 +20,7 @@ This is demo of project (click gif to see full video).
 
 ## Internationalization - english, spanish and polish
 
-[![Demo5](https://j.gifs.com/0Vrn3v.gif)](https://j.gifs.com/9QEzAx.gif)
+[![Demo5](https://j.gifs.com/9QEzAx.gif)](https://www.youtube.com/watch?v=JwCxxv3zcFw&feature=youtu.be)
 
 ## Spring security - access denied, 404 (custom error pages)
 
