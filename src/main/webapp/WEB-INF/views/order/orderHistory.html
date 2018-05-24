@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+	<link href="../../../resources/css/orderHistory.css" th:href="@{/resources/css/orderHistory.css}" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+	<div th:replace="fragments/navbar :: navbar('orders')">navbar</div>
+
+	<div class="container">
+		<div th:replace="fragments/alert :: alert (type=${type}, message=${message})">message</div>
+			
+		<div th:if="${#lists.isEmpty(orderList)}">
+			There is no order history
+			<a th:href="@{/}" class="btn btn-success btn-block">Home <i class="fa fa-home"></i></a>
+		</div>
+		
+		<div th:if="${not #lists.isEmpty(orderList)}">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header ">
+						<div class="btn-group">
+							<button type="button" class="btn btn-success btn-filter" data-target="Completed">Completed</button>
+							<button type="button" class="btn btn-info btn-filter" data-target="Pending">Pending</button>
+							<button type="button" class="btn btn-warning btn-filter" data-target="InProgress">In progress</button>
+							<button type="button" class="btn btn-danger btn-filter" data-target="Cancelled">Cancelled</button>
+							<button type="button" class="btn btn-default btn-filter" data-target="all">All</button>
+						</div>
+					</div>
+						<div class="card-body">
+						<table class="table table-filter d-flex">
+							<tbody class="col-12">
+								<tr class="d-flex" th:each="order : ${orderList}" th:attr="data-status=${order.statusCode}">
+									<td class="col-10">
+										<div class="order">
+											<div class="order-body">
+												<span class="order-meta pull-right" th:text="${order.createdDate}"></span>
+												<h4 class="title" th:text="${order.orderName}"></h4>
+												
+												<span th:if="${order.statusCode == T(pl.jacekkulis.snowrental.models.OrderStatusCode).Pending}" 
+													class="pull-right pending" th:text="${order.statusCode}"></span>
+												<span th:if="${order.statusCode == T(pl.jacekkulis.snowrental.models.OrderStatusCode).Completed}" 
+													class="pull-right completed" th:text="${order.statusCode}"></span>
+												<span th:if="${order.statusCode == T(pl.jacekkulis.snowrental.models.OrderStatusCode).InProgress}" 
+													class="pull-right inProgress" th:text="${order.statusCode}"></span>
+												<span th:if="${order.statusCode == T(pl.jacekkulis.snowrental.models.OrderStatusCode).Cancelled}" 
+													class="pull-right cancelled" th:text="${order.statusCode}"></span>
+											</div>
+										</div>
+									</td>
+									
+									<td class="col-2 text-center mx-1 my-1 px-1 py-1">
+										<a class="btn btn-warning col-4" th:if="${order.statusCode == T(pl.jacekkulis.snowrental.models.OrderStatusCode).Completed}" th:href="@{/order/getReport(orderId=${order.id})}" >
+											<i class="fa fa-file" style="color:white"></i>
+										</a>
+										<button class="btn btn-info col-4" type="button">
+											<i class="fa fa-info icon-white"></i>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:insert="~{fragments/footer :: footer}"></div>
+
+	<th:block layout:replace="fragments/itemCard :: updateBasketScript"/>
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+	<th:block layout:replace="fragments/mainScripts :: userEdit"/>
+	
+	<script type="text/javascript">
+		$(document).ready(function () {
+		  $('.btn-filter').on('click', function () {
+		      var $target = $(this).data('target');
+		      if ($target != 'all') {
+		        $('.table tr').attr("style", "display: none !important");
+		        $('.table tr[data-status="' + $target + '"]').fadeIn('slow');
+		      } else {
+		        $('.table tr').attr("style", "display: none !important").fadeIn('slow');
+		      }
+		    });
+		 });
+	</script>
+</body>
+</html>

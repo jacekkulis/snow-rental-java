@@ -1,0 +1,117 @@
+<th:block xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:fragment="mainScripts">
+	<script src="../../../resources/js/jquery.min.js"
+		th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+	<script src="../../../resources/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</th:block>
+
+
+
+
+<th:block xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:fragment="userEdit">
+<script src="../../../resources/js/bootstrap4-editable.js"
+			th:src="@{/resources/js/bootstrap4-editable.js}"></script>
+
+<script th:inline="javascript" type="text/javascript">
+		/*<![CDATA[*/
+		
+		var userId;
+		var cardBody = $('.modal-body');
+		
+	 	$(document).ready(function(){
+			//Click user panel and get userId and update editable
+			cardBody.hover(function() {
+				//get data-for attribute
+				var dataFor = $(this).attr('data-for');
+				var string = dataFor.split('.').join("");
+				var user = string.match(/\d+/);
+				userId = user[0];
+				console.log(userId); 
+				setupAjaxAndEditable();
+				firstName();
+				lastName();
+				enabled();
+			});
+	 	});
+		
+		
+		var user =  /*[[${newUser}]]*/ '';
+			
+		console.log(user);
+			
+		
+		function setupAjaxAndEditable(){
+			var token = /*[[${_csrf.token}]]*/ '';
+			var paramName = /*[[${_csrf.parameterName}]]*/ '';
+			var header = /*[[${_csrf.headerName}]]*/ '';
+			
+			/* Needed for CSRF Spring Security*/
+			$(document).ajaxSend(function(e,xhr,options) {
+			   xhr.setRequestHeader(header, token);
+			});
+			//turn to inline mode
+			$.fn.editable.defaults.mode = 'inline';
+			
+			/* Custom buttons */
+			$.fn.editableform.buttons = 
+			      '<button type="submit" class="btn btn-success btn-sm editable-submit">'+
+			        '<i class="fa fa-check" aria-hidden="true"></i>'+
+			      '</button>'+
+			      '<button type="button" class="btn btn-danger btn-sm editable-cancel">'+
+			        '<i class="fa fa-times" aria-hidden="true"></i>'+
+			      '</button>';  
+		}
+		
+		function firstName() {   
+			/* firstName change - editable*/
+			$('#firstName'+userId).editable({
+				type : 'text',
+				title : 'Enter firstName',
+				pk : userId,
+				url : '/snowrental/user/edit/firstName',
+				params: function(params) {
+				    //originally params contain pk, name and value
+				    params.id = userId;
+				    return params;
+				}
+			});
+		}
+		
+		function lastName() {   
+			/* lastName change - editable*/
+			$('#lastName'+userId).editable({
+				type : 'text',
+				title : 'Enter lastName',
+				pk : userId,
+				url : '/snowrental/user/edit/lastName',
+				params: function(params) {
+				    //originally params contain pk, name and value
+				    params.id = userId;
+				    return params;
+				}
+			});
+		}
+		
+		function enabled() {   
+			/* enabled change - editable*/
+			$('#enabled'+userId).editable({
+				type : 'select',
+				title : 'Enter select',
+				pk : userId,
+				url : '/snowrental/user/edit/enabled',
+			 	source: [{value: true, text: 'true'}, {value: false, text: 'false'}],
+				params: function(params) {
+				    //originally params contain pk, name and value
+				    params.id = userId;
+				    return params;
+				}
+			});
+		}
+		/*]]>*/
+		</script>
+		
+</th:block>

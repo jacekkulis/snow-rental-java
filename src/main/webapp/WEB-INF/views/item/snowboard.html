@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+
+	<link href="../../../resources/css/itemCard.css" th:href="@{/resources/css/itemCard.css}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div th:replace="fragments/navbar :: navbar('snowboard')">navbar</div>
+
+	<div class="container-fluid">
+		<div th:replace="fragments/alert :: alert (type=${type}, message=${message})">message</div>
+
+		<div class="py-5 px-5" th:if="${not #lists.isEmpty(snowboardList)}">
+			<div class="row">
+				<div class="col-md-6" th:each="snowboard : ${snowboardList}">
+					<div th:insert="fragments/itemCard :: itemCard(${snowboard})"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:insert="~{fragments/footer :: footer}"></div>
+
+
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+	<th:block layout:replace="fragments/mainScripts :: userEdit"/>
+	<script th:inline="javascript" layout:fragment="addToBasketScript" type="text/javascript">
+		function addToBasket(id) {
+			window.location.href = '/snowrental/basket/add?id=' + id;
+			console.log("id= " + id);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+</head>
+<body>
+    <div th:fragment="userMessage(id, type, message)" th:if="${!#strings.isEmpty(id) and !#strings.isEmpty(type) and !#strings.isEmpty(message)}" class="alert alert-dismissable" th:classappend="'alert-' + ${type}">
+        <a class="close" th:onclick="|userReadMessage('${id}')|" data-dismiss="alert" aria-hidden="true">&times;</a>
+        <span th:text="${message}">Test</span>
+    </div>
+    
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+
+	<script type="text/javascript">
+		function userReadMessage(id) {
+			window.location.href = '/userReadMessage?id=' + id;
+			console.log("id= " + id);
+		}
+	</script>
+</body>
+</html>

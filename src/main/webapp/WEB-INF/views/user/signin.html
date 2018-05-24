@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+</head>
+<body>
+ 	<div th:replace="fragments/navbar :: navbar('signin')">navbar</div>
+
+	<div class="container">
+		<div class="py-5 text-center">
+			<h2 th:text="#{label.signin}"></h2>
+		</div>
+
+		<div th:replace="fragments/alert :: alert (type=${type}, message=${message})">message</div>
+		<div th:if="${param.error != null}" class="alert alert-danger" role="alert" th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</div>
+		<div th:if="${param.message != null}" class="alert alert-danger" role="alert" th:text="${param.message[0]}">error</div>
+
+
+		<form class="needs-validation" action="#" th:action="@{/signin}" method="post">
+			<div class="mb-3">
+				<label for="email" th:text="#{label.user.email}" class="control-label"></label>
+				
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
+					</div>
+					<input type="email" class="form-control" th:placeholder="#{label.user.email}" name="email" required />
+				</div>
+			</div>
+
+
+			<div class="mb-3">
+				<label for="password" th:text="#{label.user.password}" class="control-label"></label>
+				
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-key" aria-hidden="true"></i></span>
+					</div>
+					<input type="password" class="form-control" th:placeholder="#{label.user.password}" name="password" required />
+				</div>
+			</div>
+			
+			<button class="btn btn-primary btn-lg btn-block"
+				th:text="#{button.signin}" type="submit">Sign in</button>
+		</form>
+	</div>
+
+	<div th:insert="~{fragments/footer :: footer}"></div>
+
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+</body>
+</html>

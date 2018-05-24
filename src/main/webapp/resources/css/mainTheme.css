@@ -1,0 +1,93 @@
+/*
+ * Main settings
+ */
+body {
+	padding-top: 90px;
+	padding-bottom: 10px;
+}
+
+.container {
+	max-width: 960px;
+}
+
+/*
+ * Extra utilities
+ */
+.border-top {
+	border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+	box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.flex-equal>* {
+	-ms-flex: 1;
+	-webkit-box-flex: 1;
+	flex: 1;
+}
+
+@media ( min-width : 768px) {
+	.flex-md-equal>* {
+		-ms-flex: 1;
+		-webkit-box-flex: 1;
+		flex: 1;
+	}
+}
+
+.overflow-hidden {
+	overflow: hidden;
+}
+
+/*
+* Footer
+*/
+.footer {
+	background-color: #EDEFF1 !important;
+	height: auto;
+	padding-bottom: 30px;
+	position: relative;
+	width: 100%;
+	border-bottom: 1px solid #CCCCCC;
+	border-top: 1px solid #DDDDDD;
+}
+
+.footer p {
+	margin: 0;
+}
+
+.footer img {
+	max-width: 100%;
+}
+
+.footer h3 {
+	border-bottom: 1px solid #BAC1C8;
+	color: #54697E;
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 27px;
+	padding: 40px 0 10px;
+	text-transform: uppercase;
+}
+
+.footer ul {
+	font-size: 13px;
+	list-style-type: none;
+	margin-left: 0;
+	padding-left: 0;
+	margin-top: 15px;
+	color: #7F8C8D;
+}
+
+.footer ul li a {
+	padding: 0 0 5px 0;
+	display: block;
+}
+
+.footer a {
+	color: #78828D
+}

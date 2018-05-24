@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+	<script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+<body>
+<div th:replace="fragments/navbar :: navbar('signup')">navbar</div>
+	<div class="container">
+		<div class="py-5 text-center">
+			<h2 th:text="#{label.signup}"></h2>
+		</div>
+	
+		<div th:replace="fragments/alert :: alert (type=${type}, message=${message})">message</div>
+		
+		<form class="needs-validation" action="#" th:action="@{/register}" th:object="${user}" method="post">
+			<div class="mb-3">
+				<label class="form-control-label" for="email" th:text="#{label.user.email}"></label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="emailPrepend"><i class="fa fa-user"></i></span>
+					</div>
+					
+					<input type="email" class="form-control" th:classappend="${#fields.hasErrors('email')}? 'is-invalid'" 
+					th:field="*{email}" th:placeholder="#{placeholder.user.email}" name="email" aria-describedby="emailPrepend" required />
+							
+					<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" id="emailError" class="invalid-feedback"></div>
+				</div>
+				
+				<small id="emailHelpBlock" class="form-text text-muted" th:text="#{help.email}"></small>
+			</div>
+			
+			<div class="mb-3">
+				<label class="form-control-label" for="password" th:text="#{label.user.password}"></label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="passwordPrepend"><i class="fa fa-key"></i></span>
+					</div>
+					
+					<input type="password" class="form-control" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" 
+					th:field="*{password}" th:placeholder="#{placeholder.user.password}" name="passowrd" aria-describedby="passwordPrepend" required />
+							
+					<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></div>
+				</div>
+				
+				<small id="passwordHelpBlock" class="form-text text-muted"  th:text="#{help.password}"></small>
+			</div>
+			
+			<div class="mb-3">
+				<label class="form-control-label" for="repeatPassword" th:text="#{label.user.repeatPassword}"></label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="repPasswordPrepend"><i class="fa fa-key"></i></span>
+					</div>
+					
+					<input type="password" class="form-control" th:classappend="${#fields.hasErrors('repeatPassword')}? 'is-invalid'" 
+					th:field="*{repeatPassword}" th:placeholder="#{placeholder.user.repeatPassword}" name="repeatPassword" aria-describedby="repPasswordPrepend" required />
+							
+					<div th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}"  class="invalid-feedback"></div>
+				</div>
+			</div>
+			
+			
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label class="form-control-label" for="firstName" th:text="#{label.user.firstName}"></label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="firstNamePrepend"><i class="fa fa-key"></i></span>
+						</div>
+						
+						<input type="text" class="form-control" th:classappend="${#fields.hasErrors('firstName')}? 'is-invalid'" 
+						th:field="*{firstName}" th:placeholder="#{placeholder.user.firstName}" name="firstName" aria-describedby="firstNamePrepend" required />
+							
+						<div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="invalid-feedback"></div>
+					</div>
+				</div>
+				<div class="col-md-6 mb-3">
+					<label class="form-control-label" for="lastName" th:text="#{label.user.lastName}"></label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="lastNamePrepend"><i class="fa fa-key"></i></span>
+						</div>
+						
+						<input type="text" class="form-control" th:classappend="${#fields.hasErrors('lastName')}? 'is-invalid'" 
+						th:field="*{lastName}" th:placeholder="#{placeholder.user.lastName}" name="lastName" aria-describedby="lastNamePrepend" required />
+							
+						<div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="invalid-feedback"></div>
+					</div>
+				</div>
+			</div>
+			
+				
+			<div class="mb-3">
+				<label for="captcha" th:text="#{label.captcha}" class="control-label"></label>
+				
+				<div class="g-recaptcha" th:attr="data-sitekey=${@captchaService.getReCaptchaSite()}" id="captcha"></div>
+				<div th:if="${#fields.hasErrors('reCaptchaResponse')}" th:errors="*{reCaptchaResponse}" class="alert alert-danger" role="alert"></div>
+			</div>
+	
+			<button class="btn btn-primary btn-lg btn-block" th:text="#{button.signin}" type="submit">Sign in</button>
+		</form>
+	</div>
+	
+	<div th:insert="~{fragments/footer :: footer}"></div>
+	
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+</body>
+</html>

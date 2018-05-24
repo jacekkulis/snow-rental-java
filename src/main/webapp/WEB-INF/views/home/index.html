@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead" />
+	
+	<link href="../../../resources/css/imgbg.css" th:href="@{/resources/css/imgbg.css}" rel="stylesheet" type="text/css" />
+	<link href="../../../resources/css/index.css" th:href="@{/resources/css/index.css}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div th:replace="fragments/navbar :: navbar('home')"></div>
+	
+	<div class="container">
+		<div th:replace="fragments/userMessage :: userMessage(id=${userMessageId}, type=${userMessageType}, message=${userMessage})">message</div>
+		<div th:replace="fragments/alert :: alert(type=${type}, message=${message})">message</div>
+
+		<div class="d-md-flex flex-md-equal flex container">
+			<article>
+				<div th:onclick="'window.location.href=\'' +  @{/ski} + '\''"
+					class="item-wrapper">
+					<figure>
+						<div class="image" th:style="'background-image: url(' + @{/resources/img/ski.jpg} + ')'"></div>
+						<div class="lighting"></div>
+					</figure>
+					<div class="item-content">
+						<h1 th:text="#{label.page.ski}">Ski</h1>
+					</div>
+				</div>
+			</article>
+			<article>
+				<div th:onclick="'window.location.href=\'' +  @{/snowboard} + '\''"
+					class="item-wrapper">
+					<figure>
+						<div class="image"
+							th:style="'background-image: url(' + @{/resources/img/snowboard.jpg} + ')'"></div>
+						<div class="lighting"></div>
+					</figure>
+					<div class="item-content ">
+						<h1 th:text="#{label.page.snowboard}">Snowboard</h1>
+					</div>
+				</div>
+			</article>
+		</div>
+
+
+		<!-- Services section -->
+		<section id="showcase" sec:authorize="isAuthenticated() and hasRole('ROLE_ADMIN')" >
+			<div class="container-fluid">
+				<h2 class="section-title mb-2 h1" th:text="#{label.page.showcase}">SHOWCASE</h2>
+				<div class="row mt-5">
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+						<div class="card h-100">
+							<div class="card-block-nofa block-1 ">
+								<h3 th:text="#{label.page.rest}"></h3>
+								<p th:text="#{showcase.text.rest}"></p>
+								<div class="col-md-12 row">
+									<a th:href="@{/userRest/85}" class="px-1 py-1 mx-1 my-1" >
+										<img th:src="@{/resources/img/json.png}" class="img-fluid rounded mx-auto d-block" 
+										style="height: 90px;"/>
+									</a>
+									<a th:href="@{/userRest/85.xml}"  class="px-1 py-1 mx-1 my-1">
+										<img th:src="@{/resources/img/xml.png}" class="img-fluid rounded mx-auto d-block" 
+										style="height: 90px;"/>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+						<div class="card h-100">
+							<div class="card-block block-2">
+								<h3 th:text="#{label.page.i18n}"></h3>
+								<p th:text="#{showcase.text.i18n}"></p>
+								
+								<div class="col-md-12 row">
+									<a th:href="@{/changeLang(lang=en)}" class="px-1 py-1 mx-1 my-1">
+										<img th:src="@{/resources/img/flags/en.png}" class="img-fluid rounded mx-auto d-block" style="width: 60px; height: 40px;"/>
+									</a>
+									<a th:href="@{/changeLang(lang=es)}"  class="px-1 py-1 mx-1 my-1">
+										<img th:src="@{/resources/img/flags/es.png}" class="img-fluid rounded mx-auto d-block" style="width: 60px; height: 40px;"/>
+									</a>
+									<a th:href="@{/changeLang(lang=pl)}"  class="px-1 py-1 mx-1 my-1">
+										<img th:src="@{/resources/img/flags/pl.png}" class="img-fluid rounded mx-auto d-block" style="width: 60px; height: 40px;"/>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- /Services section -->
+
+	</div>
+
+	<div th:replace="fragments/footer :: footer"></div>
+
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+	
+	<th:block layout:replace="fragments/mainScripts :: userEdit"/>
+
+	<script type="text/javascript">
+		function userReadMessage(id) {
+			window.location.href = '/snowrental/userReadMessage?id=' + id;
+			console.log("id= " + id);
+		}
+		
+		
+	</script>
+
+	<script>
+		var articles = $('article > .item-wrapper'), lightingRgb = '255,255,255';
+
+		articles
+				.mousemove(function(e) {
+					var current = $(this), x = current.width() - e.offsetX * 2, y = current
+							.height()
+							- e.offsetY * 2, rx = -x / 30, ry = y / 24, deg = Math
+							.atan2(y, x)
+							* (180 / Math.PI) + 45;
+					current.css({
+						"transform" : "scale(1.05) rotateY(" + rx
+								+ "deg) rotateX(" + ry + "deg)"
+					});
+					$('figure > .lighting', this).css(
+							'background',
+							'linear-gradient(' + deg + 'deg, rgba('
+									+ lightingRgb + ',0.32) 0%, rgba('
+									+ lightingRgb + ',0) 100%)');
+				});
+
+		articles.on({
+			'mouseenter' : function() {
+				var current = $(this);
+				current.addClass('enter ease').removeClass("leave");
+				setTimeout(function() {
+					current.removeClass('ease');
+				}, 280);
+			},
+			'mouseleave' : function() {
+				var current = $(this);
+				current.css({
+					"transform" : "rotate(0)"
+				});
+				current.removeClass('enter').addClass("leave");
+				$('figure > .lighting', this).removeAttr('style');
+			}
+		});
+	</script>
+</body>
+</html>

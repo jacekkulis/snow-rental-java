@@ -1,0 +1,76 @@
+
+.panel {
+	border: 1px solid #ddd;
+	background-color: #fcfcfc;
+}
+.panel .btn-group {
+	margin: 15px 0 30px;
+}
+.panel .btn-group .btn {
+	transition: background-color .3s ease;
+}
+.table-filter {
+	background-color: #fff;
+	border-bottom: 1px solid #eee;
+}
+.table-filter tbody tr:hover {
+	cursor: pointer;
+	background-color: #eee;
+}
+.table-filter tbody tr td {
+	padding: 10px;
+	vertical-align: middle;
+	border-top-color: #eee;
+}
+.table-filter tbody tr.selected td {
+	background-color: #eee;
+}
+.table-filter tr td:first-child {
+	width: 38px;
+}
+.table-filter tr td:nth-child(2) {
+	width: 35px;
+}
+
+.table-filter .order-body {
+    display: block;
+    /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
+}
+.table-filter .order-meta {
+	font-size: 11px;
+	color: #999;
+}
+.table-filter .order .title {
+	color: #2BBCDE;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: normal;
+	margin: 0;
+}
+.table-filter .order span {
+	font-size: .8em;
+	margin-right: 20px;
+}
+.table-filter .order span.completed {
+	color: #5cb85c;
+}
+
+.table-filter .order span.pending {
+	color: #f0ad4e;
+}
+
+.table-filter .order span.inProgress {
+	color: #5bc0de;
+}
+
+.table-filter .order span.cancelled {
+	color: #d9534f;
+}
+
+.table-filter .order span.default {
+	color: #446378;
+}
+
+.table-filter .order .summary {
+	font-size: 14px;
+}

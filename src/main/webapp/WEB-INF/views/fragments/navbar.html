@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+</head>
+<body>
+
+	<div th:fragment="navbar(activeTab)">
+		<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark justify-content-between">
+			<a class="navbar-brand" href="#"><img th:src="@{/resources/img/brand.png}" width="30" height="30" class="d-inline-block align-top" alt=""> Snow Rental</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+					<li th:class="${activeTab == 'home'}? 'active' : null">
+						<a class="nav-link" th:href="@{/}" th:text="#{label.page.home}">Home</a>
+					</li>
+					<li sec:authorize="isAuthenticated()" th:class="${activeTab == 'basket'}? 'active' : null">
+						<a class="nav-link" th:href="@{/basket}" th:text="#{label.page.basket}">Your basket</a>
+					</li>
+					
+					<li sec:authorize="!isAuthenticated()" th:class="${activeTab == 'signin'}? 'active' : null">
+						<a class="nav-link" th:href="@{/signin}" th:text="#{label.page.signin}">Sign in</a>
+					</li>
+					
+					<li sec:authorize="!isAuthenticated()" th:class="${activeTab == 'signup'}? 'active' : null">
+						<a class="nav-link" th:href="@{/register}" th:text="#{label.page.signup}">Sign up</a>
+					</li>
+					
+					<li sec:authorize="isAuthenticated() and hasRole('ROLE_ADMIN') or hasRole('ROLE_SERVICEMAN')" th:class="${activeTab == 'userList'}? 'active' : null">
+						<a class="nav-link" th:href="@{/userList}" th:text="#{label.page.userlist}">User list</a>
+					</li>
+				</ul>
+			</div>
+			
+			<ul class="navbar-nav">
+				<li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" th:text="${#authentication.name}" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					</a>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+						<div class="dropdown-divider"></div>	
+						<h6 class="dropdown-header" th:text="#{label.page.useraction}">User action</h6>
+						<a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" th:text="#{label.page.editProfile}">Edit profile</a>
+						<a class="dropdown-item" th:href="@{/orders}" th:text="#{label.page.rentalHistory}">Rental history</a>
+						<a class="dropdown-item" href="javascript: document.logoutForm.submit()" th:text="#{label.page.logout}">Logout</a>
+						<form name="logoutForm" th:action="@{/userLogout}" th:hidden="true" method="post">
+							<button class="nav-link" type="submit">Sign out</button>
+						</form>
+					</div>
+				</li>
+			</ul>
+			
+			
+		</nav>
+	
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true" th:if="${session.user}">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel" th:text="#{label.editUser}"></h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" th:attr="data-for='user'+${session.user.id}">
+						<div class="row-fluid user-infos" th:classappend="'user' + ${session.user.id}">
+							<div class="col-12">
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										<h3 class="panel-title">User information</h3>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-2">
+												<img class="img-circle"
+													src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100"
+													alt="User Pic">
+											</div>
+											<div class="col-10">
+												<table class="table table-responsive table-user-information d-flex">
+													<tbody class="col-12">
+														<tr class="d-flex px-1 py-1 mx-1 my-1">
+															<td class="col-4">First name:</td>
+															<td th:id="'firstName' + ${session.user.id}" class="col-8" th:text="${session.user.firstName}"></td>
+														</tr>
+														<tr class="d-flex px-1 py-1 mx-1 my-1">
+															<td class="col-4">Last name:</td>
+															<td th:id="'lastName' + ${session.user.id}" class="col-8" th:text="${session.user.lastName}"></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<th:block layout:replace="fragments/mainScripts :: userEdit"/>
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+</body>
+</html>

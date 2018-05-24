@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+  	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+	
+</head>
+<body>
+	<div th:replace="fragments/alert :: alert (type=${danger}, message=${message})">message</div>
+
+	<div th:fragment="userCard(user)" th:if="${user}">
+		<div class="card-body" th:attr="data-for='user'+${user.getId()}">
+			<div class="row user-row">
+				<div class="col-1">
+					<img class="img-circle" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50" alt="User Pic">
+				</div>
+				<div class="col-10">
+					<strong th:id="'email' + ${user.id}" th:text="${user.email}"></strong><br> 
+					<span class="text-muted" th:inline="text">User roles: [[${user.roles}]]</span>
+				</div>
+
+				<div class="col-1 dropdown-user" th:attr="data-for='.user'+${user.getId()}">
+					<i class="fa fa-chevron-down text-muted"></i>
+				</div>
+			</div>
+			
+			<div class="row-fluid user-infos" th:classappend="'user' + ${user.id}">
+				<div class="col-10 offset-md-1">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">User information</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-2">
+									<img class="img-circle"
+										src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100"
+										alt="User Pic">
+								</div>
+								<div class="col-10">
+									<table class="table table-responsive table-user-information d-flex">
+										<tbody class="col-12">
+											<tr class="d-flex px-1 py-1 mx-1 my-1">
+												<td class="col-4">First name:</td>
+												<td th:id="'firstName' + ${user.id}" class="col-8" th:text="${user.firstName}"></td>
+											</tr>
+											<tr class="d-flex px-1 py-1 mx-1 my-1">
+												<td class="col-4">Last name:</td>
+												<td th:id="'lastName' + ${user.id}" class="col-8" th:text="${user.lastName}"></td>
+											</tr>
+											<tr class="d-flex px-1 py-1 mx-1 my-1">
+												<td class="col-4">Is enabled:</td>
+												<td th:id="'enabled' + ${user.id}" class="col-8" th:text="${user.enabled}"></td>
+											</tr>
+											<tr class="d-flex">
+												<td class="col-12">
+													<a th:href="@{/userOrders(id=${user.id})}" class="btn btn-success btn-block">
+														 User orders <i class="fa fa-bars" style="color:white"></i>
+													</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<button class="btn  btn-primary" type="button" th:disabled="true">
+								<i class="fa fa-envelope icon-white"></i>
+							</button>
+							<span class="pull-right">
+								<a th:href="@{/user/delete(userId=${user.id})}" class="btn btn-danger">
+									<i class="fa fa-trash icon-white" style="color:white"></i>
+								</a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+
+	<th:block th:inline="javascript" layout:fragment="userCardScript">
+		<script src="../../../resources/js/bootstrap4-editable.js"
+			th:src="@{/resources/js/bootstrap4-editable.js}"></script>
+			
+		<script type="text/javascript">
+		/*<![CDATA[*/
+		
+		var userId;
+		
+		 $(document).ready(function(){	 
+			var cardBody = $('.card-body');
+			
+			//Click user panel and get userId and update editable
+			cardBody.hover(function() {
+				//get data-for attribute
+				var dataFor = $(this).attr('data-for');
+				var string = dataFor.split('.').join("");
+				var user = string.match(/\d+/);
+				userId = user[0];
+				console.log(userId); 
+				setupAjaxAndEditable();
+				email();
+				firstName();
+				lastName();
+				enabled();
+			});
+			
+			
+			var user =  /*[[${newUser}]]*/ '';
+				
+			console.log(user);
+		 });
+				
+		
+		function setupAjaxAndEditable(){
+			//turn to inline mode
+			$.fn.editable.defaults.mode = 'inline';
+			
+			/* Custom buttons */
+			$.fn.editableform.buttons = 
+			      '<button type="submit" class="btn btn-success btn-sm editable-submit">'+
+			        '<i class="fa fa-check" aria-hidden="true"></i>'+
+			      '</button>'+
+			      '<button type="button" class="btn btn-danger btn-sm editable-cancel">'+
+			        '<i class="fa fa-times" aria-hidden="true"></i>'+
+			      '</button>';  
+		}
+		
+		
+		/*Function callbacks for every dynamic chosen user*/
+		function email() {   
+			var token = /*[[${_csrf.token}]]*/ '';
+			var paramName = /*[[${_csrf.parameterName}]]*/ '';
+			var header = /*[[${_csrf.headerName}]]*/ '';
+			
+			/* Needed for CSRF Spring Security*/
+			$(document).ajaxSend(function(e,xhr,options) {
+			   xhr.setRequestHeader(header, token);
+			});
+			
+			/* Email change - editable*/
+			$('#email'+userId).editable({
+				type : 'text',
+				title : 'Enter email',
+				pk : userId,
+				url : '/snowrental/user/edit/email',
+				params: function(params) {
+				    //originally params contain pk, name and value
+				    params.id = userId;
+				    return params;
+				}
+			});
+		}
+		
+		
+		function firstName() {   
+			/* firstName change - editable*/
+			$('#firstName'+userId).editable({
+				type : 'text',
+				title : 'Enter firstName',
+				pk : userId,
+				url : '/snowrental/user/edit/firstName',
+				params: function(params) {
+				    //originally params contain pk, name and value
+				    params.id = userId;
+				    return params;
+				}
+			});
+		}
+		
+		function lastName() {   
+			/* lastName change - editable*/
+			$('#lastName'+userId).editable({
+				type : 'text',
+				title : 'Enter lastName',
+				pk : userId,
+				url : '/snowrental/user/edit/lastName',
+				params: function(params) {
+				    //originally params contain pk, name and value
+				    params.id = userId;
+				    return params;
+				}
+			});
+		}
+		
+		function enabled() {   
+			/* enabled change - editable*/
+			$('#enabled'+userId).editable({
+				type : 'select',
+				title : 'Enter select',
+				pk : userId,
+				url : '/snowrental/user/edit/enabled',
+			 	source: [{value: true, text: 'true'}, {value: false, text: 'false'}],
+				params: function(params) {
+				    //originally params contain pk, name and value
+				    params.id = userId;
+				    return params;
+				}
+			});
+		}
+		/*]]>*/
+		</script>
+	</th:block>
+
+</body>
+</html>

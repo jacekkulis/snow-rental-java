@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+</head>
+<body th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
+		<div class="container">
+			<div th:replace="fragments/alert :: alert (type=${type}, message=${message})">message</div>
+			
+			<h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>
+	        <p th:utext="${message}">Error java.lang.NullPointerException</p>
+	        
+	        <a th:href="@{/}" th:text="#{error.404.message.home}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span></a>
+		</div>
+		
+	<div th:insert="~{fragments/footer :: footer}"></div>
+	
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+</body>
+</html>

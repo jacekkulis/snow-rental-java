@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+</head>
+<body>
+	<div th:replace="fragments/navbar :: navbar('nothing')"></div>
+	<div class="container">
+		<div class="jumbotron mt-3">
+			<h1 th:text="#{label.regConf}"></h1>
+			
+			<p class="lead" th:text="#{message.regSucc}"></p>
+			<div th:replace="fragments/alert :: alert (type=${type}, message=${message})">message</div>
+			
+			<span th:if="${param.token != null}" th:text="#{token.message}">token</span> 
+			<span th:text="${param.token}">token</span> <br /> 
+			<a class="btn btn-primary" th:href="@{/signin}" th:text="#{label.signin}">signin</a>
+		</div>
+	</div>
+
+	<div th:insert="~{fragments/footer :: footer}"></div>
+	
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+	<link href="../../../resources/css/itemCard.css" th:href="@{/resources/css/itemCard.css}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div th:replace="fragments/navbar :: navbar('ski')">navbar</div>
+
+	<div class="container-fluid">
+		<div th:replace="fragments/alert :: alert (type=${danger}, message=${message})">message</div>
+
+		<div th:if="${successMessage}" class="alert alert-success"
+			role="alert" th:text=${successMessage}>successmessage</div>
+		<div th:if="${errorMessage}" class="alert alert-danger" role="alert"
+			th:text="${errorMessage}">error</div>
+
+		<div class="py-5 px-5" th:if="${not #lists.isEmpty(skiList)}">
+			<div class="row">
+				<div class="col-md-6" th:each="ski : ${skiList}">
+					<div th:insert="fragments/itemCard :: itemCard(${ski})"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:insert="~{fragments/footer :: footer}"></div>
+
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+	<th:block layout:replace="fragments/mainScripts :: userEdit"/>
+
+	<script th:inline="javascript" layout:fragment="addToBasketScript" type="text/javascript">
+		function addToBasket(id) {
+			window.location.href = '/snowrental/basket/add?id=' + id;
+			console.log("id= " + id);
+		}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<th:block layout:insert="fragments/htmlhead"/>
+</head>
+<body>
+    <div th:fragment="itemCard(item)" th:if="${item}">
+        <div class="card-container">
+			<div class="card-body">
+				<div class="side side-front">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="product-image col-12 col-lg-3">
+								<img th:src="@{/itemImage(code=${item.uniqueCode})}" alt="" />
+							</div>
+							<div class="content col-12 col-lg-9">
+								<h2 th:text="${item.name}"></h2>
+								<div class="item-details">
+									<div class="size">
+										<h3 th:text="#{label.page.size}">Size:</h3>
+										<p th:text="${item.size}"></p>
+									</div>
+									<div th:if="${item instanceof T(pl.jacekkulis.snowrental.models.Ski)}" class="radius">
+										<h3 th:text="#{label.page.radius}">Radius:</h3>
+										<p th:text="${item.radius}"></p>
+									</div>
+									<div th:if="${item instanceof T(pl.jacekkulis.snowrental.models.Snowboard)}" class="flex">
+										<h3 th:text="#{label.page.flex}">Flex</h3>
+										<p th:text="${item.flex}"></p>
+									</div>
+								</div>
+								<div class="description" >
+									<p th:text="${item.description}">Description</p>
+								</div>
+								<div th:onclick="|addToBasket('${item.id}')|" class="button" th:text="#{button.addToBasket}">ADD TO BASKET</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+
+
+	<th:block layout:replace="fragments/mainScripts :: mainScripts"/>
+	<script th:inline="javascript" layout:fragment="updateBasketScript" type="text/javascript">
+		function update(id) {
+			var quantity = $('#quantity' + id).val();
+			window.location.href = '/snowrental/basket/update?id=' + id
+					+ "&quantity=" + quantity;
+			console.log('quantity= ' + quantity + ", id= " + id);
+		}
+	</script>
+	
+	<script th:inline="javascript" layout:fragment="addToBasketScript" type="text/javascript">
+		function addToBasket(id) {
+			window.location.href = '/snowrental/basket/add?id=' + id;
+			console.log("id= " + id);
+		}
+	</script>
+</body>
+</html>
