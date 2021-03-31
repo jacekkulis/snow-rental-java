@@ -27,7 +27,7 @@
 		<thymeleaf-extras-java8time-version>3.0.0.RELEASE</thymeleaf-extras-java8time-version>
 		<com.fasterxml.jackson-version>2.10.0</com.fasterxml.jackson-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<guava-version>24.1.1-jre</guava-version>
+		<guava-version>29.0-jre</guava-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
