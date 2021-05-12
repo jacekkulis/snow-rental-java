@@ -11,7 +11,7 @@
 	<properties>
 		<java-version>1.8</java-version>
 		<org.springframework-version>5.0.16.RELEASE</org.springframework-version>
-		<org.springsecurity-version>5.0.16.RELEASE</org.springsecurity-version>
+		<org.springsecurity-version>5.2.10.RELEASE</org.springsecurity-version>
 		<org.thymeleaf-version>3.0.9.RELEASE</org.thymeleaf-version>
 		<org.slf4j-version>1.7.25</org.slf4j-version>
 		<log4j-version>1.2.17</log4j-version>
