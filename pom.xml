@@ -16,7 +16,7 @@
 		<org.slf4j-version>1.7.25</org.slf4j-version>
 		<log4j-version>1.2.17</log4j-version>
 		<javax.servlet-version>3.1.0</javax.servlet-version>
-		<org.hibernate-version>5.2.15.Final</org.hibernate-version>
+		<org.hibernate-version>5.4.24.Final</org.hibernate-version>
 		<org.hibernate.validator-version>5.3.6.Final</org.hibernate.validator-version>
 		<org.postgresql-version>42.2.1</org.postgresql-version>
 		<org.apache.commons-version>2.2.0</org.apache.commons-version>
