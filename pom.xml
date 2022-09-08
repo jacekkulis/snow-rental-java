@@ -18,7 +18,7 @@
 		<javax.servlet-version>3.1.0</javax.servlet-version>
 		<org.hibernate-version>5.2.15.Final</org.hibernate-version>
 		<org.hibernate.validator-version>5.3.6.Final</org.hibernate.validator-version>
-		<org.postgresql-version>42.2.1</org.postgresql-version>
+		<org.postgresql-version>42.4.1</org.postgresql-version>
 		<org.apache.commons-version>2.2.0</org.apache.commons-version>
 		<commons.io-version>2.4</commons.io-version>
 		<org.springframework.data-version>2.1.8.RELEASE</org.springframework.data-version>
