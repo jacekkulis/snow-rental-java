@@ -21,7 +21,7 @@
 		<org.postgresql-version>42.2.1</org.postgresql-version>
 		<org.apache.commons-version>2.2.0</org.apache.commons-version>
 		<commons.io-version>2.4</commons.io-version>
-		<org.springframework.data-version>2.1.8.RELEASE</org.springframework.data-version>
+		<org.springframework.data-version>2.1.9.RELEASE</org.springframework.data-version>
 		<org.thymeleaf.extras.springsecurity4-version>3.0.2.RELEASE</org.thymeleaf.extras.springsecurity4-version>
 		<nz.net.ultraq.thymeleaflayout-version>2.2.1</nz.net.ultraq.thymeleaflayout-version>
 		<thymeleaf-extras-java8time-version>3.0.0.RELEASE</thymeleaf-extras-java8time-version>
